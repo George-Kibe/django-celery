@@ -1,9 +1,13 @@
 version: '3.8'
 
 services: 
+  redis:
+    image: redis:7.0.11-alpine
 
   django:
     container_name: django
+    depends_on:
+      - redis
     build: 
       context: ./project #should be path to the Dockerfile
     command: python3 manage.py runserver 0.0.0.0:8000
@@ -12,6 +16,22 @@ services:
     ports:
       - 8001:8000
     environment:
-      - DEBUG=1
+      - DEBUG=0
       - SECRET_KEY=django-insecure-v^#&gf)$6!twqn1x)-pxj9bverarhlu)wyccvl!*m*-s+n!(y*
       - ALLOWED_HOSTS=localhost, 127.0.0.1
+      - DOCKER_MODE=True
+      - CELERY_BROKER_URL=
+
+  celery:
+    container_name: celery
+    depends_on:
+      - redis
+    build: 
+      context: ./project
+    volumes:
+      - ./project:/usr/src/app/
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=django-insecure-v^#&gf)$6!twqn1x)-pxj9bverarhlu)wyccvl!*m*-s+n!(y*
+      - ALLOWED_HOSTS=localhost, 127.0.0.1
+      - DOCKER_MODE=True

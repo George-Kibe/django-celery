@@ -3,13 +3,18 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DOCKER_MODE = os.environ.get('DOCKER_MODE', False)
+print("Docker mode: ", DOCKER_MODE)
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+if DOCKER_MODE == True:
+    DEBUG = os.environ.get('DEBUG')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',') 
+else:
+    DEBUG = True
+    SECRET_KEY = "sdvhfshfhfhfef34g3gurgugvrugu"
+    ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -104,3 +109,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')

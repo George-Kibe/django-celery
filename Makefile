@@ -1,14 +1,20 @@
-.PHONY: run-server superuser build migrate
+.PHONY: run-server superuser build migrate down interact
 
 migrate:
-	python3 manage.py makemigrations; python3 manage.py migrate
+	python3 project/manage.py makemigrations; python3 project/manage.py migrate
 
 run-server:
-	python3 manage.py runserver
+	python3 project/manage.py runserver
 
 superuser:
-	python3 manage.py createsuperuser
+	python3 project/manage.py createsuperuser
 
 build:
-docker-compose up -d --build
+	docker-compose up -d --build
 
+down:
+	docker-compose down --remove-orphans
+
+interact:
+	docker exec -it django  /bin/sh
+	# django is the name of the container
