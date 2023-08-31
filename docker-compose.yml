@@ -1,0 +1,17 @@
+version: '3.8'
+
+services: 
+
+  django:
+    container_name: django
+    build: 
+      context: ./project #should be path to the Dockerfile
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./project:/usr/src/app/
+    ports:
+      - 8001:8000
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-v^#&gf)$6!twqn1x)-pxj9bverarhlu)wyccvl!*m*-s+n!(y*
+      - ALLOWED_HOSTS=localhost, 127.0.0.1
