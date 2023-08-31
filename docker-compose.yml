@@ -28,6 +28,7 @@ services:
       - redis
     build: 
       context: ./project
+    command: celery --app=project worker -l INFO # ["executable", "arg"]
     volumes:
       - ./project:/usr/src/app/
     environment:
