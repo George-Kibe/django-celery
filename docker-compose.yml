@@ -20,7 +20,8 @@ services:
       - SECRET_KEY=django-insecure-v^#&gf)$6!twqn1x)-pxj9bverarhlu)wyccvl!*m*-s+n!(y*
       - ALLOWED_HOSTS=localhost, 127.0.0.1
       - DOCKER_MODE=True
-      - CELERY_BROKER_URL=
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
   celery:
     container_name: celery
@@ -36,3 +37,5 @@ services:
       - SECRET_KEY=django-insecure-v^#&gf)$6!twqn1x)-pxj9bverarhlu)wyccvl!*m*-s+n!(y*
       - ALLOWED_HOSTS=localhost, 127.0.0.1
       - DOCKER_MODE=True
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0

@@ -1,4 +1,4 @@
-.PHONY: run-server superuser build migrate down interact
+.PHONY: run-server superuser build migrate down interact change-mode
 
 migrate:
 	python3 project/manage.py makemigrations; python3 project/manage.py migrate
@@ -18,3 +18,6 @@ down:
 interact:
 	docker exec -it django  /bin/sh
 	# django is the name of the container
+
+change-mode:
+	chmod +x ./entrypoint.sh
