@@ -8,6 +8,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 django_application = get_asgi_application()
 
 from . import urls # noqa isort:skip
+# from .urls import websocket_urlpatterns # noqa isort:skip
+
 
 application = ProtocolTypeRouter(
     {
