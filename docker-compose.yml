@@ -48,6 +48,7 @@ services:
     restart: always
     depends_on:
       - redis
+      - django
     build: 
       context: ./project
     command: celery --app=project worker -l INFO -B # ["executable", "arg"]
@@ -62,3 +63,16 @@ services:
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
     # env_file:
       #- ./env_vars_django.txt
+
+  celerytwo:
+    container_name: celerytwo
+    restart: always
+    depends_on:
+      - redis
+      - django
+    build: 
+      context: ./celeryworker
+      dockerfile: Dockerfile
+    command: celery -A celerytask worker -l INFO -B # ["executable", "arg"]
+    volumes:
+      - ./celeryworker:/usr/src/app/
