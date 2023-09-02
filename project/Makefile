@@ -1,13 +1,13 @@
 .PHONY: run-server superuser build migrate down interact change-mode run-uvicorn
 
 migrate:
-	python3 project/manage.py makemigrations; python3 project/manage.py migrate
+	python3 manage.py makemigrations; python3 manage.py migrate
 
 run-server:
-	python3 project/manage.py runserver
+	python3 manage.py runserver
 
 superuser:
-	python3 project/manage.py createsuperuser
+	python3 manage.py createsuperuser
 
 build:
 	docker-compose up -d --build
@@ -23,4 +23,4 @@ change-mode:
 	chmod +x ./entrypoint.sh
 
 run-uvicorn:
-	uvicorn project.project.asgi:application --port 8000 --workers 4 --log-level debug --reload
+	uvicorn project.asgi:application --port 8000 --workers 4 --log-level debug --reload

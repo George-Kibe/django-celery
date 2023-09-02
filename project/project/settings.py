@@ -26,7 +26,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # local apps
-    "newapplication"
+    "newapplication",
+    "notifications",
+    # Third party apps
+    # "rest_framework",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -105,6 +109,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "static/"
 
 # Default primary key field type
@@ -115,5 +120,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
 
-print("CELERY_BROKER_URL: ", CELERY_BROKER_URL)
-print("CELERY_RESULT_BACKEND: ", CELERY_RESULT_BACKEND)
+# print("CELERY_BROKER_URL: ", CELERY_BROKER_URL)
+# print("CELERY_RESULT_BACKEND: ", CELERY_RESULT_BACKEND)
+
+CHANNEL_LAYERS = {
+    'default': {
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'BACKEND': 'channels.layers.Inmemory.InMemoryChannelLayer',
+    }
+}
