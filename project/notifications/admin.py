@@ -7,6 +7,7 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.urls import path
+from .tasks import send_notification_task
 
 # Register your models here.
 
@@ -29,14 +30,16 @@ class NotificationAdmin(admin.ModelAdmin):
             if form.is_valid():
                 message = form.cleaned_data['message']
                 notification = Notification.objects.create(message=message)
-                channel_layer = get_channel_layer()
-                async_to_sync(channel_layer.group_send)(
-                    "notifications",
-                    {
-                        "type": "send_notification",
-                        "message": message
-                    }
-                )
+                
+                send_notification_task.delay(message)                
+                # channel_layer = get_channel_layer()
+                # async_to_sync(channel_layer.group_send)(
+                #     "notifications",
+                #     {
+                #         "type": "send_notification",
+                #         "message": message
+                #     }
+                # )
                 return HttpResponseRedirect("../{}/".format(notification.pk))
         else:
             form = SendNotificationForm()

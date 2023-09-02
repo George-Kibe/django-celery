@@ -118,15 +118,23 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
+# CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
+# CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "amqp://guest:guest@rabbitmq:5672")
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
 
 # print("CELERY_BROKER_URL: ", CELERY_BROKER_URL)
 # print("CELERY_RESULT_BACKEND: ", CELERY_RESULT_BACKEND)
 
+# Channels Configuration
+
 CHANNEL_LAYERS = {
     'default': {
-        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
+        # "BACKEND": "channels.layers.InMemoryChannelLayer"
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    }   
 }
